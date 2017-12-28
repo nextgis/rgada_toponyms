@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Географические объекты сочинений античных и средневековых авторов</title>
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="vendor/iconLayers/iconLayers.css" />
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.mouseposition.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+
+    <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
+    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/leaflet/leaflet-omnivore.min.js"></script>
+    <script src="vendor/leaflet/leaflet.mouseposition.js"></script>
+    <script src="vendor/iconLayers/iconLayers.js"></script>
+    <script src="vendor/proj4leaflet/proj4-compressed.js"></script>
+    <script src="vendor/proj4leaflet/proj4leaflet.js"></script>
+
+</head>
+    <body class="body--withRightPanel">
+        <div class="object-list right-panel active loading">
+            <div id="vue-app">
+                <plans ref="plans"></plans>
+            </div>
+        </div>  
+        <div id="object-info-right-panel" class="object-info right-panel right-panel--dyn">
+            <div class="object-info__content"></div>
+            <a href="#" class="close" data-close-right-panel="object-info-right-panel">
+                <svg class="close__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+            </a>
+        </div>
+        <div id="about-right-panel" class="about right-panel right-panel--dyn">
+            <div class="h1">О проекте</div>
+            <p>Эта геоинформационная система задумана как веб-ресурс, открывающий пользователю доступ к комплексу древнейших русских чертежей - главным образом из Российского государственного архива древних актов. Работа финансируется РНФ (грант № 14-18-02121, рук. И.Г. Коновалова). За исключением одного чертежа XVI в. этот комплекс представлен документами XVII в. (около 1000 документов). Почти все эти чертежи учтены в Каталоге, составленном В.С. Кусовым (Кусов В.С. Московское государство XVI - начала XVIII века. Сводный каталог русских географических чертежей. М., 2007).</p>
+            <p>В связи с тем, что чертежи древнее XVIII в. выполнены без математической основы и привязки к координатной сетке, с современной картографической основой они могут быть совмещены либо путем искажения (часто - до неузнаваемости), либо с очень низкой точностью. В поисках приемлемого для пользователя варианта отображение территории, нарисованной на чертеже, мы выполняем двумя способами. 1. Очень приблизительное геокодирование изображений чертежей по небольшому числу узнаваемых точек ландшафта; 2. Обозначение в виде полигона той территории, которая на чертеже изображена. Атрибутивные данные, загружаемые по щелчку мышки на плоскости полигона, заимствованы из Каталога В.С. Кусова.</p>
+            <br>
+            <p>А.А. Фролов, А.А. Голубинский</p>
+            <a href="#" class="close" data-close-right-panel="about-right-panel">
+                <svg class="close__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+            </a>
+            <div class="ngw-copyright">Работает на <a href="http://nextgis.ru/nextgis-web/" target="_blank">NextGIS Web</a></div>
+        </div>
+        <div class="map-container">
+            <div id="map" class="map">                
+                <div class="map-opacity map-control leaflet-bar">
+                    <div class="map-opacity__inner">
+                        <span class="map-opacity__icon fa fa-adjust"></span>
+                        <input class="map-opacity__control" id="raster_opacity" type="range" min="30" max="100" step="1" value="100">
+                    </div>
+                </div>
+            </div>
+            <h1 class="map-title">Географические объекты сочинений античности и средневековья</h1>
+        </div>
+
+        <!-- right panel with plans template -->
+        <script id="plansPanelTemplate" type="text/x-template">
+            <div class="plans-panel">
+                <div class="plans-panel__search">
+                    <search @search:changed = "searchQuery = $event"></search>
+                </div>
+                <plans-list :items="sortedItems"
+                            :activeItem="activeItem"
+                            @planIsClicked="activateItem($event, {
+                                withZooming: true, 
+                                withScrolling: false
+                            })"
+                            ref="plansList"></plans-list> 
+            </div>
+        </script>
+
+        <!-- plans list template -->
+        <script id="plansListTemplate" type="text/x-template">
+            <div class="plans-list">
+                <div v-for="item in items"
+                     class="plan-item" :class="{'plan-item--active': activeItem === item}"
+                     :ref="item.feature.properties.ogc_fid"
+                     @click = "$emit('planIsClicked', item)">
+                    <div class="plan-item__title h2">{{item.feature.properties.toponym}}</div>
+                    <div class="plan-item__meta">Страницы: {{ item.feature.properties.pages }}</div>
+                    <div class="plan-item__num">{{ item.feature.properties.ogc_fid }}</div>
+                </div>
+
+                <div v-if="!items.length" class="plan-item plan-item--noresult">Ничего не найдено</div>
+            </div>
+        </script>
+
+        <!-- search template -->
+        <script id="searchTemplate" type="text/x-template">
+            <div class="search">
+                <input class="search__input form-control" type="search" placeholder="Искать объект"
+                       v-model="searchQuery"
+                       @input="$emit('search:changed', searchQuery)">
+            </div>
+        </script>
+
+        <script lang="text/javascript">
+            var layers = [
+                {
+                    name: 'multipolygons',
+                    url: 'http://histgeo.nextgis.com/api/resource/1095/geojson',
+                    style: {
+                        color: '#4CAF50',
+                        weight: 1
+                    }
+                },
+                {
+                    name: 'lines',
+                    url: 'http://histgeo.nextgis.com/api/resource/1097/geojson',
+                    style: {
+                        color: '#1565c0',
+                        weight: 2
+                    }
+                },
+                {
+                    name: 'polygons',
+                    url: 'http://histgeo.nextgis.com/api/resource/1093/geojson',
+                    style: {
+                        color: '#1565c0',
+                        weight: 2
+                    }
+                }
+            ],
+            layersData = [];
+        </script>
+
+        <script src="vendor/vue/vue.min.js"></script>
+        <script src="js/loadData.js"></script>
+        <script src="js/base_layers.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/plans.js"></script>
+    </body>
+</html>
