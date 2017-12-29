@@ -76,7 +76,7 @@ Vue.component('plans-list', {
         }
     },
     methods:{
-        scrollToItem(item){
+        scrollToItem: function(item){
             var that = this;
             Vue.nextTick(function () {
                 var itemEl = $(".plan-item--active")[0];
