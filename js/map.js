@@ -11,13 +11,17 @@ var mainMap = L.map('map'),
     raster_layers = [],
     selected_markers = [],
     centroids,
-    markers;
-
-var defIcon = new L.Icon.Default();
-defIcon.options.iconSize = [28, 40];
-var selIcon = new L.Icon.Default();
-selIcon.options.iconUrl = 'marker-icon-red.png';
-selIcon.options.iconSize = [28, 40];
+    markers,
+    defIcon =  L.icon({
+        iconUrl: './img/leaflet/marker-icon.png',
+        iconSize: [28, 40],
+        iconAnchor: [13, 40]
+    }),
+    selIcon =  L.icon({
+        iconUrl: './img/leaflet/marker-icon-red.png',
+        iconSize: [28, 40],
+        iconAnchor: [13, 40]
+    });
 
 // Change the position of the Zoom Control to a newly created placeholder.
 addControlPlaceholders(mainMap);
@@ -113,15 +117,24 @@ function onClick(e) {
 }
 
 function highlightFeature(layer){
-    layer.setStyle({
-        color: "#FFC107",
-        weight: 4
-    });
+    if (layer.feature.geometry.type != "Point"){
+        layer.setStyle({
+            color: "#FFC107",
+            weight: 4
+        });
+    } else {
+        layer.setIcon(selIcon);
+    }
 }
 
 function unhighlightFeature(layer){
-    if (layer.sourceLayer && layer.sourceLayer.style)
-    layer.setStyle(layer.sourceLayer.style);   
+
+    if (layer.feature.geometry.type != "Point"){
+        if (layer.sourceLayer && layer.sourceLayer.style)
+            layer.setStyle(layer.sourceLayer.style);
+    } else {
+        layer.setIcon(defIcon);
+    }
 }
 
 // Create centered Control placeholders

@@ -36,9 +36,20 @@ function initLayerLoadingPromises(){
                             },
                             onEachFeature: function (feature, layer) {
                                 layer.on({click: onClick});
+                            },                            
+                            pointToLayer: function(feature, latlng) {
+                                return L.marker(latlng, {icon: defIcon});
                             }
                         })
-                        layer.geojson.addTo(mainMap);
+
+                        if (layer.name !== "points"){
+                            layer.geojson.addTo(mainMap);
+                        } else{
+                            var markers = L.markerClusterGroup({maxClusterRadius: 50});
+                            markers.addLayer(layer.geojson);
+                            markers.addTo(mainMap);
+                        }
+
                         objectLayersGroup.addLayer(layer.geojson);
                         resolve();
                     })

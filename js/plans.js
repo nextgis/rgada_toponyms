@@ -50,7 +50,13 @@ Vue.component('plans', {
                 unhighlightFeature(this.activeItem);
 
             this.activeItem = item;
-            if (options.withZooming) mainMap.setView(item.getCenter());
+            if (options.withZooming) {
+                if (item.feature.geometry.type != "Point"){
+                    mainMap.setView(item.getCenter());
+                } else{
+                    mainMap.setView(item._latlng, 12);
+                }
+            }
             if (options.withScrolling) this.$refs.plansList.scrollToItem(item)
             highlightFeature(item);
         }

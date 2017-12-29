@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport">
     <title>Географические объекты сочинений античных и средневековых авторов</title>
-    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />    
+    <link rel="stylesheet" href="vendor/leaflet/MarkerCluster.css" />
+    <link rel="stylesheet" href="vendor/leaflet/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="vendor/iconLayers/iconLayers.css" />
     <link rel="stylesheet" href="vendor/leaflet/leaflet.mouseposition.css" />
     <link rel="stylesheet" href="css/main.css" />
 
 
     <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
-    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/leaflet/leaflet.js"></script>    
+    <script src="vendor/leaflet/leaflet.markercluster.js"></script>
     <script src="vendor/leaflet/leaflet-omnivore.min.js"></script>
     <script src="vendor/leaflet/leaflet.mouseposition.js"></script>
     <script src="vendor/iconLayers/iconLayers.js"></script>
@@ -125,6 +128,13 @@
                     style: {
                         color: '#1565c0',
                         weight: 2
+                    }
+                },
+                {
+                    name: 'points',
+                    url: 'http://histgeo.nextgis.com/api/resource/1099/geojson',
+                    style: {
+                        color: 'tomato'
                     }
                 }
             ],
