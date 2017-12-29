@@ -242,8 +242,9 @@ p{
     background-color: #f9f9f9;
 }
 
-.plan-item--active{
-    background-color: #f3f3f3;
+.plan-item--active,
+.plan-item--active:hover{
+    background-color: #E0E0E0;
 }
 
     .plan-item__num{
