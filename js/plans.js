@@ -19,14 +19,14 @@ Vue.component('plans', {
             if (this.searchQuery){
                 filteredItems = filteredItems.filter(function(item){
 
-                    var totalString = item.feature.properties.ogc_fid + " " + item.feature.properties.pages.toLowerCase() + " " + item.feature.properties.toponym.toLowerCase();                    
+                    var totalString = item.feature.properties.ogc_fid + " " + item.feature.properties.pages.toLowerCase() + " " + item.feature.properties.toponym.toLowerCase() + " " + item.feature.properties.group.toLowerCase();                    
                     return (totalString.indexOf(searchQuery)>-1);
 
                 }, this);
             }
 
             filteredItems = filteredItems.sort(function(a,b){
-                return (a.feature.properties.ogc_fid - b.feature.properties.ogc_fid);
+                return (a.feature.properties.order_number - b.feature.properties.order_number);
             });
 
             return filteredItems;

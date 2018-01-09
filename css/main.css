@@ -222,7 +222,7 @@ p{
     overflow: hidden;
 }
 
-.plans-list{
+.plans-list__wrapper{
     position: absolute;
     top: 68px;
     overflow: auto;
@@ -230,31 +230,47 @@ p{
     width: 100%;
 }
 
+.plans-list td{
+    border-bottom: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+    padding: 10px 12px 12px;
+}
+
+.plans-list td:first-child{
+    border-left:0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 .plan-item{
     position: relative;
     cursor: pointer;
-    padding: 12px 76px 16px 20px;
-    line-height: 1.43;
-    border-bottom: 1px solid #ebebeb;
+    line-height: 1.2;
 }
 
-.plan-item:hover{
+.plan-item:hover td{
     background-color: #f9f9f9;
 }
 
-.plan-item--active,
-.plan-item--active:hover{
+.plan-item--active td,
+.plan-item--active:hover td{
     background-color: #E0E0E0;
+    border-left-color: #ccc;
 }
+    .plan-item__title{
+        margin-bottom: 4px; 
+    }
 
     .plan-item__num{
-        position: absolute;
-        font-size: 25px;
-        color: rgba(81, 163, 220, 0.54);
-        right: 12px;
-        top: 12px;
+        font-size: 16px;
+        color: rgba(81, 163, 220, 0.83);
         line-height: 1;
         font-weight: bold;
+        text-align: center
+    }
+
+    .plan-item__group{
+        text-align: center;
     }
 
     .plan-item--noresult{

@@ -81,17 +81,24 @@
 
         <!-- plans list template -->
         <script id="plansListTemplate" type="text/x-template">
-            <div class="plans-list">
-                <div v-for="item in items"
-                     class="plan-item" :class="{'plan-item--active': activeItem === item}"
-                     :ref="item.feature.properties.ogc_fid"
-                     @click = "$emit('planIsClicked', item)">
-                    <div class="plan-item__title h2">{{item.feature.properties.toponym}}</div>
-                    <div class="plan-item__meta">Страницы: {{ item.feature.properties.pages }}</div>
-                    <div class="plan-item__num">{{ item.feature.properties.ogc_fid }}</div>
-                </div>
+            <div class="plans-list__wrapper">
+                <table class="plans-list" cellspacing="0">
+                    <tbody>
+                        <tr v-for="item in items"
+                             class="plan-item" :class="{'plan-item--active': activeItem === item}"
+                             :ref="item.feature.properties.ogc_fid"
+                             @click = "$emit('planIsClicked', item)">
+                            <td><div class="plan-item__num">{{ item.feature.properties.ogc_fid }}</div></td>  
+                            <td>
+                                <div class="plan-item__title h2">{{item.feature.properties.toponym}}</div>
+                                <div class="plan-item__meta">Страницы: {{ item.feature.properties.pages }}</div>
+                            </td>
+                            <td><div class="plan-item__group">{{item.feature.properties.group}}</div></td>
+                        </tr>
 
-                <div v-if="!items.length" class="plan-item plan-item--noresult">Ничего не найдено</div>
+                        <tr v-if="!items.length" class="plan-item plan-item--noresult"><td colspan="3">Ничего не найдено</td></tr>
+                    </tbody>
+                </table>
             </div>
         </script>
 
