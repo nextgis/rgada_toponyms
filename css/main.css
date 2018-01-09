@@ -230,6 +230,10 @@ p{
     width: 100%;
 }
 
+.plans-list{
+    width: 100%;
+}
+
 .plans-list td{
     border-bottom: 1px solid #ebebeb;
     border-left: 1px solid #ebebeb;
@@ -273,12 +277,15 @@ p{
         text-align: center;
     }
 
-    .plan-item--noresult{
+    .plan-item--noresult td,
+    .plan-item--noresult td:first-child{
         border-bottom: 0;
-        cursor: default
+        cursor: default;
+        padding-top: 20px;
+        padding-left: 20px;
     }
 
-    .plan-item--noresult:hover{
+    .plan-item--noresult:hover td{
         background-color: inherit;
     }
 
